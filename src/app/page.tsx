@@ -1,32 +1,49 @@
-"use client"
-import SearchBar from "@/components/Searchbar";
-import { Button } from "@/components/ui/button";
-import { PackagePlus, Star } from "lucide-react";
+"use client";
+import { AnimatedGroup } from "@/components/core/animated-group";
+import Tool from "@/components/Tool";
+import { toolslist } from "@/staticdata/toolslist";
 
 export default function Home() {
-  const dfdf = () => {};
   return (
     <div className="h-screen w-full">
-      <section className="mt-12">
-        <div className="lg:text-xl xl:text-xl text-sm text-zinc-500 dark:text-white">
-          <h1>A toolkit directory for web designers & developers.</h1>
-          <h1>Carefully Curated & Maintained for the community.</h1>
-        </div>
-        <div className="flex mt-3 gap-2">
-          <Button className="">
-            <PackagePlus className="h-[1.2rem] w-[1.2rem]" />{" "}
-            <span className="">Submit Resource</span>
-          </Button>
-          <Button
-            variant="outline"
-            className="border border-zinc-500 dark:border-white"
-          >
-            <Star className="h-[1.2rem] w-[1.2rem]" />
-            <span className="">Star Repo</span>
-          </Button>
-        </div>
-        <SearchBar onSearch={dfdf} />
-      </section>
+      <AnimatedGroup
+        className="w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4"
+        variants={{
+          container: {
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.05,
+              },
+            },
+          },
+          item: {
+            hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+            visible: {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              transition: {
+                duration: 1.2,
+                type: "spring",
+                bounce: 0.3,
+              },
+            },
+          },
+        }}
+      >
+        {toolslist.map((item, index) => (
+          <Tool
+            description={item.description}
+            externalUrl={item.externalUrl}
+            id={item.id}
+            imageUrl={item.imageUrl}
+            name={item.name}
+            key={index}
+          />
+        ))}
+      </AnimatedGroup>
     </div>
   );
 }

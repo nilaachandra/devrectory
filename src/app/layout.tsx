@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import { Inter } from "next/font/google";
+import ProgressBarWrapper from "@/components/ProgressBarWrapper";
+import Hero from "@/components/Hero";
+import CategoriesNav from "@/components/CategoriesNav";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,10 +35,14 @@ export default function RootLayout({
         className={`${inter.className} antialiased min-h-screen scroll-smooth`}
       >
         <ThemeProvider>
-          <div className="max-w-[1024px] w-full mx-auto px-4 py-2">
-            <Navbar />
-            {children}
-          </div>
+          <ProgressBarWrapper>
+            <div className="max-w-[1024px] w-full mx-auto px-4 py-2">
+              <Navbar />
+              <Hero/>
+              <CategoriesNav/>
+              {children}
+            </div>
+          </ProgressBarWrapper>
         </ThemeProvider>
       </body>
     </html>
