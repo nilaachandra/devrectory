@@ -8,16 +8,17 @@ import ProgressBarWrapper from "@/components/ProgressBarWrapper";
 import Hero from "@/components/Hero";
 import CategoriesNav from "@/components/CategoriesNav";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+// const geistSans = localFont({
+//   src: "./fonts/GeistVF.woff",
+//   variable: "--font-geist-sans",
+//   weight: "100 900",
+// });
+// const geistMono = localFont({
+//   src: "./fonts/GeistMonoVF.woff",
+//   variable: "--font-geist-mono",
+//   weight: "100 900",
+// });
+
 const inter = Inter({ subsets: ["latin"], weight: ["400", "800"] });
 export const metadata: Metadata = {
   title: "Devrectory",

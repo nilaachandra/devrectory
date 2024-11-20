@@ -2,10 +2,9 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { PackagePlus, Star } from "lucide-react";
-import SearchBar from "./Searchbar";
 
 const Hero = () => {
-  const dfdf = () => {};
+  // const dfdf = () => {};
   return (
     <section className="mt-12">
       <div className="lg:text-xl xl:text-xl text-sm text-zinc-500 dark:text-white">
