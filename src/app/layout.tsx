@@ -35,16 +35,16 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased min-h-screen scroll-smooth`}
       >
-        <ThemeProvider>
-          <ProgressBarWrapper>
+        <ProgressBarWrapper>
+          <ThemeProvider>
             <div className="max-w-[1024px] w-full mx-auto px-4 py-2">
               <Navbar />
-              <Hero/>
-              <CategoriesNav/>
+              <Hero />
+              <CategoriesNav />
               {children}
             </div>
-          </ProgressBarWrapper>
-        </ThemeProvider>
+          </ThemeProvider>
+        </ProgressBarWrapper>
       </body>
     </html>
   );
