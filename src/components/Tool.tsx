@@ -52,7 +52,7 @@ const Tool: React.FC<ToolProps> = ({
         <img
           src={imageUrl}
           alt={`${name} logo`}
-          className="rounded-lg h-[60px] w-[60px]"
+          className="rounded-lg h-[64px] w-[64px]"
         />
         <div className="ml-3 flex-1 flex flex-col">
           <CardHeader className="p-0">
