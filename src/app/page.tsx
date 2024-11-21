@@ -37,6 +37,8 @@ export default function Home() {
           <Tool
             description={item.description}
             externalUrl={item.externalUrl}
+            category={item.category}
+            isPopular={true}
             id={item.id}
             imageUrl={item.imageUrl}
             name={item.name}
