@@ -8,7 +8,7 @@ const ProgressBarWrapper = ({ children }: { children: ReactNode }) => {
     <>
       {children}
       <ProgressBar
-        height="4px"
+        height="3px"
         options={{ showSpinner: false }}
         shallowRouting
         color="#facc16"
