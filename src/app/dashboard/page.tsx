@@ -1,26 +1,54 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { SignOutButton } from "@/components/SignOutButton"
+'use client'
 
-export default async function DashboardPage() {
-  const session = await getServerSession()
+import { useState } from 'react'
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { Button } from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+
+export default function DashboardPage() {
+  const { data: session } = useSession()
+  const [showSignOutDialog, setShowSignOutDialog] = useState(false)
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false })
+    router.push('/')
+  }
 
   if (!session) {
-    redirect("/login?callbackUrl=/dashboard")
+    return null // or a loading state
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Welcome to the Dashboard</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-xl mb-4">You are logged in as: {session.user?.name}</p>
-          <SignOutButton />
-        </CardContent>
-      </Card>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <p className="mb-4">Welcome to your dashboard, {session.user?.name}!</p>
+      <Button onClick={() => setShowSignOutDialog(true)}>Sign out</Button>
+
+      <AlertDialog open={showSignOutDialog} onOpenChange={setShowSignOutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to sign out?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You will be redirected to the home page after signing out.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleSignOut}>Sign out</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

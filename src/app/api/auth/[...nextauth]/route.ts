@@ -1,5 +1,10 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { User } from "next-auth"
+
+interface ExtendedUser extends User {
+  id: string
+}
 
 const handler = NextAuth({
   providers: [
@@ -10,20 +15,30 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // This is where we'll check the user credentials
-        const user = { id: "1", name: "Admin", email: "admin@example.com" }
-
         if (credentials?.username === process.env.ADMIN_USERNAME && 
             credentials?.password === process.env.ADMIN_PASSWORD) {
-          return user
-        } else {
-          return null
+          return { id: "1", name: "Admin" } as ExtendedUser
         }
+        return null
       }
     })
   ],
   pages: {
     signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as ExtendedUser).id = token.id as string
+      }
+      return session
+    },
   },
 })
 

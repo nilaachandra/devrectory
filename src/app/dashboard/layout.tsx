@@ -1,24 +1,27 @@
-import SessionProvider from "@/components/SessionProvider"
-import { getServerSession } from "next-auth/next"
-import { redirect } from "next/navigation"
+'use client'
 
-export default async function DashboardLayout({
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession()
+  const { data: session, status } = useSession()
+  const router = useRouter()
 
-  if (!session) {
-    redirect("/login")
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    }
+  }, [status, router])
+
+  if (status === 'loading') {
+    return <div>Loading...</div>
   }
 
-  return (
-    <SessionProvider session={session}>
-      <div className="min-h-screen ">
-        {children}
-      </div>
-    </SessionProvider>
-  )
+  return <div className="min-h-scree">{children}</div>
 }
 
