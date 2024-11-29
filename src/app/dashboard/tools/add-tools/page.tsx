@@ -39,7 +39,6 @@ const ReactQuill = dynamic(
   },
   { ssr: false }
 )
-
 const quillModules = {
   toolbar: [
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
