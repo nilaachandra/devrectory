@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
@@ -25,35 +25,13 @@ import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toolFormSchema, type ToolFormValues, Categories } from "@/lib/schema"
-import dynamic from "next/dynamic"
-import "react-quill/dist/quill.snow.css"
+import { Editor } from '@tinymce/tinymce-react'
 import { useToast } from "@/hooks/use-toast"
-
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill")
-    // @ts-ignore
-    return function comp({ forwardedRef, ...props }) {
-      return <RQ ref={forwardedRef} {...props} />
-    }
-  },
-  { ssr: false }
-)
-const quillModules = {
-  toolbar: [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["blockquote", "code-block"],
-    [{ align: [] }],
-    ["link"],
-    ["clean"],
-  ],
-}
 
 export default function CreateToolPage() {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const editorRef = useRef<any>(null)
 
   const form = useForm<ToolFormValues>({
     resolver: zodResolver(toolFormSchema),
@@ -93,6 +71,9 @@ export default function CreateToolPage() {
         description: "Tool created successfully",
       })
       form.reset()
+      if (editorRef.current) {
+        editorRef.current.setContent('')
+      }
     },
     onError: () => {
       toast({
@@ -164,23 +145,32 @@ export default function CreateToolPage() {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <div className="min-h-[200px]">
-                        <Controller
-                          name="description"
-                          control={form.control}
-                          render={({ field }) => (
-                            <div className="h-[200px] mb-12">
-                              <ReactQuill
-                                theme="snow"
-                                modules={quillModules}
-                                value={field.value}
-                                onChange={field.onChange}
-                                className="h-full"
-                              />
-                            </div>
-                          )}
-                        />
-                      </div>
+                      <Controller
+                        name="description"
+                        control={form.control}
+                        render={({ field }) => (
+                          <Editor
+                            apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+                            onInit={(evt, editor) => editorRef.current = editor}
+                            initialValue=""
+                            init={{
+                              height: 300,
+                              menubar: false,
+                              plugins: [
+                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                              ],
+                              toolbar: 'undo redo | blocks | ' +
+                                'bold italic forecolor | alignleft aligncenter ' +
+                                'alignright alignjustify | bullist numlist outdent indent | ' +
+                                'removeformat | help',
+                              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                            }}
+                            onEditorChange={(content) => field.onChange(content)}
+                          />
+                        )}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
