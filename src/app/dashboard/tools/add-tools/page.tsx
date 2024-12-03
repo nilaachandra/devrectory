@@ -50,7 +50,7 @@ export default function CreateToolPage() {
 
   const mutation = useMutation({
     mutationFn: async (values: ToolFormValues) => {
-      const response = await fetch('/api/tools', {
+      const response = await fetch('/api/toolslist/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function CreateToolPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="mt-4">
       <Card>
         <CardHeader>
           <CardTitle>Create New Tool</CardTitle>
