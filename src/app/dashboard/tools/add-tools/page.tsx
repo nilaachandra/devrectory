@@ -150,7 +150,7 @@ export default function CreateToolPage() {
                         control={form.control}
                         render={({ field }) => (
                           <Editor
-                            apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+                            apiKey={process.env.TINYMCE_API_KEY}
                             onInit={(evt, editor) => editorRef.current = editor}
                             initialValue=""
                             init={{
